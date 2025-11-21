@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  risk-scoring:
+    build:
+      context: ./risk-scoring
+      dockerfile: Dockerfile
+    container_name: trace-x-risk-scoring
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./risk-scoring:/app
+      - /app/venv  # Don't override venv
+    environment:
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+    networks:
+      - trace-x-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: trace-x-backend
+    ports:
+      - "8888:8888"
+    environment:
+      - ETHERSCAN_API_KEY=${ETHERSCAN_API_KEY}
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+    depends_on:
+      risk-scoring:
+        condition: service_healthy
+    networks:
+      - trace-x-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/api/dashboard/summary"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: trace-x-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules  # Don't override node_modules
+    environment:
+      - VITE_BACKEND_API_URL=http://localhost:8888
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - trace-x-network
+
+networks:
+  trace-x-network:
+    driver: bridge
+

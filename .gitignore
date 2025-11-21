@@ -1,0 +1,53 @@
+# Environment variables
+.env
+.env.local
+
+# Logs
+logs/
+*.log
+
+# PIDs
+.pids/
+*.pid
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+.pytest_cache/
+.coverage
+
+# Node
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.vite/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data & Cache
+*.db
+*.sqlite
+*.cache
+data/cache/
+data/results/
+
+# Models (optional - 모델 파일 포함하려면 주석 처리)
+# models/*.pkl
+
+# Docker
+*.dockerignore
+
