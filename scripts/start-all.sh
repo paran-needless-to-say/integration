@@ -39,9 +39,10 @@ echo ""
 
 echo "🔧 Starting Backend API (port 8888)..."
 cd backend
+source venv/bin/activate 2>/dev/null || python3 -m venv venv && source venv/bin/activate
 export ETHERSCAN_API_KEY=$ETHERSCAN_API_KEY
-pip3 install -q -e .
-python3 main.py > ../logs/backend.log 2>&1 &
+pip install -q -e .
+python main.py > ../logs/backend.log 2>&1 &
 BACKEND_PID=$!
 cd ..
 

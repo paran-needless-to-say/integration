@@ -2,6 +2,11 @@
 .env
 .env.local
 
+# Private files (API keys, secrets)
+*.private.md
+*.private.txt
+API_KEYS.*
+
 # Logs
 logs/
 *.log

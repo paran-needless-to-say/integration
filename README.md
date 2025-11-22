@@ -475,7 +475,9 @@ MIT License
 
 ## 📖 추가 문서
 
+- [**핵심 로직 가이드**](docs/CORE_LOGIC.md) ⭐ - 프로젝트의 핵심 로직과 데이터 플로우 상세 설명
 - [통합 가이드](docs/INTEGRATION_GUIDE.md)
+- [통합 요약](docs/INTEGRATION_SUMMARY.md)
 - [API 상세 문서](docs/API.md)
 - [시스템 아키텍처](docs/ARCHITECTURE.md)
 - [배포 가이드](docs/DEPLOYMENT.md)
