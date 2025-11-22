@@ -34,14 +34,14 @@
    - 주소 입력 + 체인 선택
    - 분석 결과 시각화
 
-2. **백엔드** (`100end/`)
+2. **백엔드** (`backend/` 또는 원격: `100end`)
 
    - Etherscan API로 거래 데이터 수집
    - Multi-hop 그래프 생성
    - 리스크 스코어링 API 호출
    - 결과를 프론트로 전달
 
-3. **리스크 스코어링 API** (`Cryptocurrency-Graphs-of-graphs/`)
+3. **리스크 스코어링 API** (`risk-scoring/` 또는 원격: `aml-risk-engine2`)
    - 거래 데이터 분석
    - 룰 기반 스코어링
    - 그래프 패턴 탐지
@@ -52,8 +52,10 @@
 
 ### 1. 리스크 스코어링 API
 
+#### 통합 레포에서 실행 (권장)
+
 ```bash
-cd Cryptocurrency-Graphs-of-graphs
+cd risk-scoring  # 통합 레포 내부
 
 # 가상환경 활성화
 source venv/bin/activate  # macOS/Linux
@@ -67,6 +69,22 @@ pip install -r requirements.txt
 python run_server.py
 ```
 
+#### 원격 레포에서 실행
+
+```bash
+git clone https://github.com/paran-needless-to-say/aml-risk-engine2.git
+cd aml-risk-engine2
+
+# 가상환경 활성화
+source venv/bin/activate
+
+# 의존성 설치
+pip install -r requirements.txt
+
+# 서버 실행
+python run_server.py
+```
+
 **포트**: 5001
 **URL**: `http://localhost:5001`
 
@@ -74,7 +92,25 @@ python run_server.py
 
 ### 2. 백엔드 설정
 
+#### 통합 레포에서 실행 (권장)
+
 ```bash
+cd backend  # 통합 레포 내부
+
+# 의존성 설치
+pip3 install -e .
+
+# 환경 변수 설정
+export ETHERSCAN_API_KEY=your_etherscan_api_key_here
+
+# 서버 실행
+python3 main.py
+```
+
+#### 원격 레포에서 실행
+
+```bash
+git clone https://github.com/paran-needless-to-say/100end.git
 cd 100end
 
 # 의존성 설치
@@ -134,7 +170,8 @@ npm run dev
 #### Terminal 1: 리스크 스코어링 API
 
 ```bash
-cd /Users/yelim/Desktop/파란학기/Cryptocurrency-Graphs-of-graphs
+# 통합 레포에서 실행
+cd risk-scoring
 source venv/bin/activate
 python run_server.py
 ```
@@ -144,7 +181,8 @@ python run_server.py
 #### Terminal 2: 백엔드
 
 ```bash
-cd /Users/yelim/Desktop/파란학기/100end
+# 통합 레포에서 실행
+cd backend
 export ETHERSCAN_API_KEY=your_api_key
 python3 main.py
 ```
@@ -154,7 +192,8 @@ python3 main.py
 #### Terminal 3: 프론트엔드
 
 ```bash
-cd /Users/yelim/Desktop/파란학기/frontend
+# 통합 레포에서 실행
+cd frontend
 npm run dev
 ```
 
@@ -286,8 +325,13 @@ curl -X POST http://localhost:8888/api/analysis/risk-scoring \
 # 리스크 스코어링 API 확인
 curl http://localhost:5001/health
 
-# 실행 중이 아니면 시작
-cd Cryptocurrency-Graphs-of-graphs
+# 실행 중이 아니면 시작 (통합 레포)
+cd risk-scoring
+source venv/bin/activate
+python run_server.py
+
+# 또는 원격 레포에서
+cd aml-risk-engine2
 source venv/bin/activate
 python run_server.py
 ```
@@ -324,7 +368,7 @@ python3 main.py
 
 **원인**: 백엔드의 CORS 설정에 프론트 URL이 없음
 
-**해결**: `100end/src/app.py` 확인
+**해결**: `backend/src/app.py` 확인
 
 ```python
 CORS(app, origins=["http://localhost:5173", "https://trace-x-two.vercel.app/"])
@@ -379,14 +423,30 @@ kill -9 <PID>
 
 ## 참고 문서
 
-- [백엔드 API 문서](100end/README.md)
-- [리스크 스코어링 API 문서](Cryptocurrency-Graphs-of-graphs/README.md)
-- [프론트엔드 가이드](frontend/README.md)
+- [백엔드 API 문서](backend/README.md) (통합 레포) 또는 [100end 레포](https://github.com/paran-needless-to-say/100end)
+- [리스크 스코어링 API 문서](risk-scoring/README.md) (통합 레포) 또는 [aml-risk-engine2 레포](https://github.com/paran-needless-to-say/aml-risk-engine2)
+- [프론트엔드 가이드](frontend/README.md) (통합 레포) 또는 [frontend 레포](https://github.com/paran-needless-to-say/frontend)
+
+---
+
+## 원격 레포
+
+### 통합 레포 (모노레포)
+
+- **GitHub**: [https://github.com/paran-needless-to-say/integration](https://github.com/paran-needless-to-say/integration)
+- 통합 스크립트, 문서, Docker Compose 포함
+
+### 개별 레포
+
+- **백엔드**: [https://github.com/paran-needless-to-say/100end](https://github.com/paran-needless-to-say/100end)
+- **프론트엔드**: [https://github.com/paran-needless-to-say/frontend](https://github.com/paran-needless-to-say/frontend)
+- **리스크 스코어링**: [https://github.com/paran-needless-to-say/aml-risk-engine2](https://github.com/paran-needless-to-say/aml-risk-engine2)
 
 ---
 
 ## 문의
 
-- 백엔드 이슈: 100end 레포지토리
-- 리스크 스코어링 이슈: Cryptocurrency-Graphs-of-graphs 레포지토리
-- 프론트엔드 이슈: frontend 레포지토리
+- 통합 레포 이슈: [integration 레포지토리](https://github.com/paran-needless-to-say/integration)
+- 백엔드 이슈: [100end 레포지토리](https://github.com/paran-needless-to-say/100end)
+- 리스크 스코어링 이슈: [aml-risk-engine2 레포지토리](https://github.com/paran-needless-to-say/aml-risk-engine2)
+- 프론트엔드 이슈: [frontend 레포지토리](https://github.com/paran-needless-to-say/frontend)
