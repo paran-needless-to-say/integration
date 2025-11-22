@@ -9,9 +9,13 @@ EC2 서버에 직접 접속해서 통합 배포하는 빠른 가이드입니다.
 다음 정보를 준비하세요:
 
 - **서버 IP 주소**: AWS 콘솔에서 확인
-- **SSH 키 파일**: `.pem` 파일 (경로)
+- **SSH 키 파일**: `.pem` 파일 (경로) - **없다면 Session Manager 사용**
 - **사용자명**: 보통 `ubuntu` 또는 `ec2-user`
 - **Etherscan API 키**: 이미 발급받은 키
+
+**📝 인스턴스가 없다면**: [EC2_NEW_INSTANCE.md](./EC2_NEW_INSTANCE.md)에서 새 인스턴스 생성 방법 확인
+
+**⚠️ 키 페어를 모르는 경우**: [EC2_ACCESS_WITHOUT_KEY.md](./EC2_ACCESS_WITHOUT_KEY.md) 참조
 
 ### 2. EC2 서버 접속 방법
 
@@ -130,10 +134,11 @@ FLASK_ENV=production
 # Python 출력 버퍼링 비활성화
 PYTHONUNBUFFERED=1
 
-# 백엔드 API URL (프론트엔드에서 사용)
+# 프론트엔드 빌드 시 사용 (VITE_ 접두사 필요)
+# EC2 서버의 퍼블릭 IP 주소로 변경하세요!
 VITE_BACKEND_API_URL=http://your-server-ip:8888
 
-# 리스크 스코어링 API URL (백엔드에서 사용, Docker 네트워크 내부)
+# 백엔드 런타임 시 사용 (Docker 네트워크 내부 통신)
 RISK_SCORING_API_URL=http://risk-scoring:5001
 EOF
 

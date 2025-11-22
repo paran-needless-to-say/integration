@@ -681,8 +681,10 @@ pip install -r requirements.txt  # 또는 pip install -e .
 
 ### 배포 가이드
 
+- [EC2 새 인스턴스 생성 가이드](EC2_NEW_INSTANCE.md): EC2 인스턴스를 처음부터 생성하는 방법
 - [빠른 배포 가이드](QUICK_DEPLOY.md): EC2 서버 접속 후 빠르게 배포하기 (5단계)
 - [프로덕션 배포 가이드](docs/DEPLOYMENT.md): EC2, Docker를 사용한 프로덕션 환경 배포 방법 (상세)
+- [키 없이 접속하기](EC2_ACCESS_WITHOUT_KEY.md): Session Manager를 사용한 접속 방법
 
 ### 백엔드 팀용 문서
 
