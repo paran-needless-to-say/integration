@@ -19,7 +19,7 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 120s  # 서버 시작 시간 여유를 위해 120초로 증가
     logging:
       driver: "json-file"
       options:
