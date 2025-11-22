@@ -126,7 +126,7 @@ sudo systemctl start nginx
 # 홈 디렉토리로 이동
 cd ~
 
-# 프로젝트 클론
+# 통합 레포 클론
 git clone https://github.com/paran-needless-to-say/integration.git trace-x
 cd trace-x
 
@@ -139,11 +139,12 @@ git pull origin main
 ```bash
 ls -la
 # 다음 디렉토리가 있어야 합니다:
-# - backend/
-# - frontend/
-# - risk-scoring/
-# - docker-compose.yml
-# - docs/
+# - backend/          # 백엔드 API
+# - frontend/         # 프론트엔드 (선택사항)
+# - risk-scoring/     # 리스크 스코어링 API
+# - docker-compose.prod.yml  # 프로덕션 배포 설정
+# - docs/             # 문서
+# - scripts/          # 배포 스크립트
 ```
 
 ---

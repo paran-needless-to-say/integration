@@ -681,7 +681,8 @@ pip install -r requirements.txt  # 또는 pip install -e .
 
 ### 배포 가이드
 
-- [프로덕션 배포 가이드](docs/DEPLOYMENT.md): EC2, Docker를 사용한 프로덕션 환경 배포 방법
+- [빠른 배포 가이드](QUICK_DEPLOY.md): EC2 서버 접속 후 빠르게 배포하기 (5단계)
+- [프로덕션 배포 가이드](docs/DEPLOYMENT.md): EC2, Docker를 사용한 프로덕션 환경 배포 방법 (상세)
 
 ### 백엔드 팀용 문서
 
