@@ -655,9 +655,15 @@ pip install -r requirements.txt  # 또는 pip install -e .
 
 ### 프로덕션 배포
 
+자세한 배포 가이드는 [프로덕션 배포 가이드](docs/DEPLOYMENT.md)를 참조하세요.
+
+주요 권장사항:
+
 - HTTPS 사용을 권장합니다
 - Rate limiting 설정을 권장합니다
 - CORS 설정을 프로덕션 도메인으로 제한합니다
+- Docker Compose를 사용한 컨테이너 배포 권장
+- 환경 변수는 `.env` 파일 또는 시크릿 관리 서비스 사용
 
 ---
 
@@ -672,6 +678,10 @@ pip install -r requirements.txt  # 또는 pip install -e .
 ### 통합 가이드
 
 - [통합 가이드](docs/INTEGRATION_GUIDE.md): 시스템 통합 및 실행 방법
+
+### 배포 가이드
+
+- [프로덕션 배포 가이드](docs/DEPLOYMENT.md): EC2, Docker를 사용한 프로덕션 환경 배포 방법
 
 ### 백엔드 팀용 문서
 
