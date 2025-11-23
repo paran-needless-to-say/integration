@@ -118,18 +118,23 @@ docker-compose -f docker-compose.prod.yml ps
 ### 6단계: 배포 확인
 
 ```bash
-# 리스크 스코어링 API healthcheck
+# 서비스 상태 확인
+docker-compose -f docker-compose.prod.yml ps
+
+# 리스크 스코어링 API healthcheck (EC2 서버에서 테스트)
 curl http://localhost:5001/health
 
 # 예상 응답:
 # {"status": "ok", "service": "aml-risk-engine"}
 
-# 서비스 상태 확인
-docker-compose -f docker-compose.prod.yml ps
-
 # 로그 확인
 docker-compose -f docker-compose.prod.yml logs risk-scoring
 ```
+
+**⚠️ 주의**:
+
+- `curl http://localhost:5001/health`는 **EC2 서버에서 테스트**할 때만 사용합니다
+- 백엔드 **코드**에서는 `http://risk-scoring:5001`을 사용해야 합니다
 
 ---
 
@@ -171,11 +176,13 @@ docker-compose -f docker-compose.prod.yml logs risk-scoring
 ### 1. API URL
 
 **Docker Compose 환경 (백엔드 컨테이너에서 접근)**:
+
 ```
 http://risk-scoring:5001
 ```
 
 **EC2 서버 외부 접근 (테스트용)**:
+
 ```
 http://<EC2-PUBLIC-IP>:5001
 ```
@@ -219,6 +226,7 @@ RISK_SCORING_API_URL=http://risk-scoring:5001
 **백엔드 팀 요청**: EC2 서버에서 리스크 스코어링 API를 실행해야 함
 
 **해야 할 일**:
+
 1. EC2 서버에 SSH 접속
 2. 프로젝트 클론/업데이트
 3. 서브디렉토리 설정
@@ -227,4 +235,3 @@ RISK_SCORING_API_URL=http://risk-scoring:5001
 6. 배포 확인
 
 **배포 완료 후**: 백엔드 팀에게 API URL (`http://risk-scoring:5001`) 전달
-
