@@ -43,11 +43,11 @@ services:
     networks:
       - trace-x-network
     healthcheck:
-        test: ["CMD", "curl", "-f", "http://localhost:8888/health"]  # 간단한 health 엔드포인트 사용
-        interval: 30s
-        timeout: 10s
-        retries: 3
-        start_period: 60s  # 서버 시작 시간 여유를 위해 60초로 증가
+      test: ["CMD", "curl", "-f", "http://localhost:8888/health"] # 간단한 health 엔드포인트 사용
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s # 서버 시작 시간 여유를 위해 60초로 증가
     logging:
       driver: "json-file"
       options:

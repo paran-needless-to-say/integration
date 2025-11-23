@@ -33,16 +33,19 @@
 ### 1. API URL
 
 #### 배포 환경 (Docker Compose 사용 시)
+
 ```
 http://risk-scoring:5001
 ```
 
 #### 로컬 개발 환경
+
 ```
 http://localhost:5001
 ```
 
 #### EC2 서버 외부 접근 (필요 시)
+
 ```
 http://<EC2-PUBLIC-IP>:5001
 ```
@@ -60,6 +63,7 @@ GET /health
 ```
 
 **응답 예시:**
+
 ```json
 {
   "status": "ok",
@@ -74,6 +78,7 @@ POST /api/score/transaction
 ```
 
 **요청 Body:**
+
 ```json
 {
   "tx_hash": "0x123...",
@@ -93,6 +98,7 @@ POST /api/score/transaction
 ```
 
 **응답 예시:**
+
 ```json
 {
   "target_address": "0xabc123...",
@@ -118,6 +124,7 @@ POST /api/analyze/address
 ```
 
 **요청 Body:**
+
 ```json
 {
   "address": "0xabc123...",
@@ -144,10 +151,12 @@ POST /api/analyze/address
 ```
 
 **파라미터:**
+
 - `analysis_type`: `"basic"` (기본, 빠름) 또는 `"advanced"` (심층 분석, 느림)
 - 기본값: `"basic"`
 
 **응답 예시:**
+
 ```json
 {
   "target_address": "0xabc123...",
@@ -332,6 +341,7 @@ docker-compose -f docker-compose.prod.yml down
 - **프론트엔드**: `http://localhost:5173`
 
 **⚠️ 주의**: Docker Compose 내부 네트워크에서는 위의 포트가 아닌 서비스 이름을 사용합니다:
+
 - `http://risk-scoring:5001`
 - `http://backend:8888`
 - `http://frontend:80`
@@ -358,6 +368,7 @@ docker run -d \
 #### 백엔드에서 연결
 
 환경 변수 설정:
+
 ```bash
 export RISK_SCORING_API_URL=http://localhost:5001
 # 또는 EC2 서버의 경우
@@ -375,6 +386,7 @@ export RISK_SCORING_API_URL=http://<EC2-PUBLIC-IP>:5001
 **원인**: API 서버가 실행되지 않음
 
 **해결**:
+
 ```bash
 # 서비스 상태 확인
 docker-compose -f docker-compose.prod.yml ps risk-scoring
@@ -391,6 +403,7 @@ docker-compose -f docker-compose.prod.yml restart risk-scoring
 **원인**: 분석 시간이 오래 걸림
 
 **해결**:
+
 - 타임아웃 시간 증가 (60초 이상)
 - `analysis_type`을 `"basic"`으로 변경
 
@@ -399,6 +412,7 @@ docker-compose -f docker-compose.prod.yml restart risk-scoring
 **원인**: API 서버 내부 에러
 
 **해결**:
+
 ```bash
 # 로그 확인
 docker-compose -f docker-compose.prod.yml logs risk-scoring
@@ -461,4 +475,3 @@ docker-compose -f docker-compose.prod.yml logs risk-scoring | grep -i error
 **마지막 업데이트**: 2025-11-23
 
 **작성자**: Trace-X 팀
-
