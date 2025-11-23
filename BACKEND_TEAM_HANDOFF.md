@@ -11,20 +11,31 @@
 ### 현재 상태
 
 - ✅ **리스크 스코어링 API**: 구현 완료, Docker 이미지 빌드 성공
-- ⚠️ **배포**: EC2 서버에서 배포 중 문제 발생
-- ⚠️ **통합**: Docker Compose를 통한 통합 배포 진행 중
+- ⚠️ **배포**: EC2 서버에서 배포 진행 중 (최종 확인 필요)
+- ✅ **통합**: Docker Compose 설정 완료
 
-### 발생한 문제들
+### 발생한 문제들 (모두 해결됨)
 
-1. **Python 버전 문제**: `networkx>=3.3` 호환성을 위해 Python 3.10+ 필요 → **해결됨**
-2. **sklearn 모듈 누락**: `scikit-learn>=1.3.0` 의존성 추가 → **해결됨**
-3. **디스크 공간 부족**: EC2 인스턴스 디스크 공간 부족 → **해결됨**
-4. **Healthcheck 문제**: Backend의 healthcheck 엔드포인트 문제 → **진행 중**
+1. ✅ **Python 버전 문제**: `networkx>=3.3` 호환성을 위해 Python 3.10+ 필요 → **해결됨**
+2. ✅ **sklearn 모듈 누락**: `scikit-learn>=1.3.0` 의존성 추가 → **해결됨**
+3. ✅ **디스크 공간 부족**: EC2 인스턴스 디스크 공간 부족 → **해결됨**
+4. ✅ **Healthcheck 문제**: Backend의 healthcheck 엔드포인트 문제 → **해결됨** (`/health` 엔드포인트 추가)
+5. ✅ **YAML 문법 오류**: docker-compose.prod.yml 들여쓰기 문제 → **해결됨**
 
-### 현재 진행 중인 작업
+### 배포 확인 필요
 
-- EC2 서버에서 Docker Compose를 통한 통합 배포 테스트 중
-- Backend healthcheck 설정 수정 중
+EC2 서버에서 다음 명령어로 배포 상태를 확인하세요:
+
+```bash
+# 서비스 상태 확인
+docker-compose -f docker-compose.prod.yml ps
+
+# 리스크 스코어링 API healthcheck
+curl http://localhost:5001/health
+
+# 로그 확인
+docker-compose -f docker-compose.prod.yml logs risk-scoring
+```
 
 ---
 
@@ -281,7 +292,8 @@ RISK_SCORING_API_URL=http://risk-scoring:5001
 RISK_SCORING_API_URL=http://risk-scoring:5001
 ```
 
-**⚠️ 중요**: 
+**⚠️ 중요**:
+
 - Docker Compose 내부 네트워크에서는 **반드시** `risk-scoring` (서비스 이름)을 사용해야 합니다
 - `localhost`는 같은 컨테이너 내에서만 작동하므로 다른 컨테이너(backend)에서는 접근할 수 없습니다
 
@@ -292,6 +304,7 @@ export RISK_SCORING_API_URL=http://localhost:5001
 ```
 
 **언제 사용하나요?**
+
 - 로컬에서 Docker 없이 직접 `python main.py`로 실행하는 경우만
 - 대부분의 경우 Docker Compose를 사용하므로 `http://risk-scoring:5001`을 사용하세요
 
