@@ -30,12 +30,17 @@ EC2 서버에서 다음 명령어로 배포 상태를 확인하세요:
 # 서비스 상태 확인
 docker-compose -f docker-compose.prod.yml ps
 
-# 리스크 스코어링 API healthcheck
+# 리스크 스코어링 API healthcheck (EC2 서버에서 테스트)
 curl http://localhost:5001/health
 
 # 로그 확인
 docker-compose -f docker-compose.prod.yml logs risk-scoring
 ```
+
+**⚠️ 주의**:
+
+- `curl http://localhost:5001/health`는 **EC2 서버에서 테스트**할 때만 사용합니다
+- 백엔드 **코드**에서는 `http://risk-scoring:5001`을 사용해야 합니다
 
 ---
 
@@ -43,25 +48,31 @@ docker-compose -f docker-compose.prod.yml logs risk-scoring
 
 ### 1. API URL
 
-#### 배포 환경 (Docker Compose 사용 시)
+#### ⚠️ 중요: 백엔드 코드에서 사용할 URL
+
+**백엔드 코드에서 반드시 사용해야 하는 URL:**
 
 ```
 http://risk-scoring:5001
 ```
 
-#### 로컬 개발 환경
+**이유**: Docker Compose는 각 서비스를 별도의 컨테이너로 실행합니다. 컨테이너들은 **내부 네트워크**에서 통신하며, 서비스 이름(`risk-scoring`)을 호스트명으로 사용합니다.
 
-```
-http://localhost:5001
-```
+- ✅ **백엔드 코드에서 사용**: `http://risk-scoring:5001` (Docker 내부 네트워크)
+- ❌ **백엔드 코드에서 사용하면 안 됨**: `http://localhost:5001` (다른 컨테이너에서는 접근 불가)
 
-#### EC2 서버 외부 접근 (필요 시)
+#### 📋 URL 사용 가이드
 
-```
-http://<EC2-PUBLIC-IP>:5001
-```
+| 용도                         | 사용할 URL                 | 설명                                             |
+| ---------------------------- | -------------------------- | ------------------------------------------------ |
+| **백엔드 코드에서 API 호출** | `http://risk-scoring:5001` | ✅ **반드시 이 URL 사용** - Docker 내부 네트워크 |
+| EC2 서버에서 테스트 (curl)   | `http://localhost:5001`    | 서버 내부에서 healthcheck 테스트용               |
+| 브라우저에서 접근            | `http://<EC2-IP>:5001`     | 외부에서 API 문서 확인용                         |
 
-**⚠️ 주의**: Docker Compose 내부 네트워크에서는 `risk-scoring:5001`을 사용하세요. `localhost`는 작동하지 않습니다.
+**⚠️ 혼동 주의**:
+
+- `curl http://localhost:5001/health` → EC2 서버에서 **테스트**할 때 사용 (서버 내부)
+- 백엔드 **코드**에서는 → `http://risk-scoring:5001` 사용 (Docker 내부 네트워크)
 
 ---
 
@@ -249,11 +260,11 @@ def check_risk_scoring_health() -> bool:
 현재 `trace-x/backend/src/api/risk_scoring.py` 파일을 확인해보세요:
 
 ```python
-# 현재 코드 (14번 줄 근처)
-RISK_SCORING_API_URL = "http://localhost:5001"
+# 현재 코드 (14번 줄 근처) - 수정 필요!
+RISK_SCORING_API_URL = "http://localhost:5001"  # ❌ Docker Compose에서는 작동 안 함
 ```
 
-**⚠️ 문제**: 이 코드는 로컬 개발 환경에서만 작동합니다. Docker Compose 환경에서는 **반드시 수정**이 필요합니다!
+**⚠️ 문제**: 이 코드는 Docker Compose 환경에서 작동하지 않습니다! **반드시 수정**이 필요합니다.
 
 **수정 방법:**
 
@@ -263,22 +274,23 @@ import os
 
 RISK_SCORING_API_URL = os.getenv(
     "RISK_SCORING_API_URL",
-    "http://risk-scoring:5001"  # Docker Compose 기본값
+    "http://risk-scoring:5001"  # ✅ Docker Compose 기본값
 )
 ```
 
-또는 환경 변수 파일(`.env`)에 추가:
+그리고 `.env` 파일에 추가:
 
 ```bash
 # .env 파일
 RISK_SCORING_API_URL=http://risk-scoring:5001
 ```
 
-**왜 이렇게 해야 하나요?**
+**왜 `risk-scoring:5001`을 사용해야 하나요?**
 
-- Docker Compose 환경: `http://risk-scoring:5001` 사용 (서비스 이름)
-- 로컬 개발 환경: `http://localhost:5001` 사용 (직접 실행)
-- 환경 변수로 관리하면 두 환경 모두에서 자동으로 올바른 URL 사용 가능
+- Docker Compose는 각 서비스를 별도 컨테이너로 실행
+- 컨테이너 간 통신은 **내부 네트워크**에서 서비스 이름으로 이루어짐
+- `localhost`는 같은 컨테이너 내에서만 작동하므로, 다른 컨테이너(backend)에서는 접근 불가
+- `risk-scoring`은 Docker Compose가 자동으로 DNS로 해석해주는 서비스 이름
 
 ---
 
