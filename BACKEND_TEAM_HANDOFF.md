@@ -233,36 +233,67 @@ def check_risk_scoring_health() -> bool:
         return False
 ```
 
-#### 현재 백엔드 코드에서 사용 중인 방법
+#### 현재 백엔드 코드 확인 및 수정 필요
 
-`trace-x/backend/src/api/risk_scoring.py` 파일을 참고하세요:
+현재 `trace-x/backend/src/api/risk_scoring.py` 파일을 확인해보세요:
 
 ```python
-# 리스크 스코어링 API URL
-RISK_SCORING_API_URL = "http://localhost:5001"  # 로컬 개발 시
-# 또는
-RISK_SCORING_API_URL = "http://risk-scoring:5001"  # Docker Compose 사용 시
+# 현재 코드 (14번 줄 근처)
+RISK_SCORING_API_URL = "http://localhost:5001"
 ```
 
-**⚠️ 주의**: Docker Compose 환경에서는 `http://risk-scoring:5001`을 사용해야 합니다. `localhost`는 작동하지 않습니다.
+**⚠️ 문제**: 이 코드는 로컬 개발 환경에서만 작동합니다. Docker Compose 환경에서는 **반드시 수정**이 필요합니다!
+
+**수정 방법:**
+
+```python
+# 환경 변수로 설정 (권장)
+import os
+
+RISK_SCORING_API_URL = os.getenv(
+    "RISK_SCORING_API_URL",
+    "http://risk-scoring:5001"  # Docker Compose 기본값
+)
+```
+
+또는 환경 변수 파일(`.env`)에 추가:
+
+```bash
+# .env 파일
+RISK_SCORING_API_URL=http://risk-scoring:5001
+```
+
+**왜 이렇게 해야 하나요?**
+
+- Docker Compose 환경: `http://risk-scoring:5001` 사용 (서비스 이름)
+- 로컬 개발 환경: `http://localhost:5001` 사용 (직접 실행)
+- 환경 변수로 관리하면 두 환경 모두에서 자동으로 올바른 URL 사용 가능
 
 ---
 
 ### 4. 환경 변수 설정
 
-#### Docker Compose 환경 변수
+#### Docker Compose 환경 변수 (프로덕션/통합 배포)
 
-`.env` 파일에 다음을 추가:
+`trace-x/.env` 파일에 다음을 추가:
 
 ```bash
 RISK_SCORING_API_URL=http://risk-scoring:5001
 ```
 
-#### 로컬 개발 환경
+**⚠️ 중요**: 
+- Docker Compose 내부 네트워크에서는 **반드시** `risk-scoring` (서비스 이름)을 사용해야 합니다
+- `localhost`는 같은 컨테이너 내에서만 작동하므로 다른 컨테이너(backend)에서는 접근할 수 없습니다
+
+#### 로컬 개발 환경 (Docker 없이 실행)
 
 ```bash
 export RISK_SCORING_API_URL=http://localhost:5001
 ```
+
+**언제 사용하나요?**
+- 로컬에서 Docker 없이 직접 `python main.py`로 실행하는 경우만
+- 대부분의 경우 Docker Compose를 사용하므로 `http://risk-scoring:5001`을 사용하세요
 
 ---
 
