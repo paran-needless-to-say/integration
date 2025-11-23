@@ -42,7 +42,7 @@ services:
       # condition: service_healthy  # 임시 비활성화 - healthcheck 문제 해결 후 다시 활성화
     networks:
       - trace-x-network
-      healthcheck:
+    healthcheck:
         test: ["CMD", "curl", "-f", "http://localhost:8888/health"]  # 간단한 health 엔드포인트 사용
         interval: 30s
         timeout: 10s
