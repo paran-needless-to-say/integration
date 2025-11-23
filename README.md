@@ -679,17 +679,18 @@ pip install -r requirements.txt  # 또는 pip install -e .
 
 - [통합 가이드](docs/INTEGRATION_GUIDE.md): 시스템 통합 및 실행 방법
 
-### 배포 가이드
+### 필수 문서
 
-- [EC2 새 인스턴스 생성 가이드](EC2_NEW_INSTANCE.md): EC2 인스턴스를 처음부터 생성하는 방법
-- [빠른 배포 가이드](QUICK_DEPLOY.md): EC2 서버 접속 후 빠르게 배포하기 (5단계)
+- **[빠른 배포 가이드](QUICK_DEPLOY.md)**: EC2 서버 접속 후 빠르게 배포하기 (5단계)
+- **[백엔드 팀 전달 문서](BACKEND_TEAM_HANDOFF.md)**: 리스크 스코어링 API 사용 가이드 및 배포 현황
+- **[문제 해결 가이드](TROUBLESHOOTING.md)**: 배포 중 발생하는 문제 해결 방법
+
+### 추가 문서
+
 - [프로덕션 배포 가이드](docs/DEPLOYMENT.md): EC2, Docker를 사용한 프로덕션 환경 배포 방법 (상세)
-- [키 없이 접속하기](EC2_ACCESS_WITHOUT_KEY.md): Session Manager를 사용한 접속 방법
-
-### 백엔드 팀용 문서
-
-- [100end 통합 가이드](docs/100END_INTEGRATION_GUIDE.md): 백엔드 팀을 위한 리스크 스코어링 API 통합 가이드
-- [100end API 사용 방법](docs/100END_API_USAGE.md): 백엔드 팀을 위한 API 사용 예시
+- [API 문서](docs/API.md): API 사용 가이드
+- [통합 가이드](docs/INTEGRATION_GUIDE.md): 시스템 통합 및 실행 방법
+- [아키텍처 문서](docs/ARCHITECTURE.md): 시스템 구조 설명
 
 ---
 
