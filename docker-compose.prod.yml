@@ -37,6 +37,7 @@ services:
     environment:
       - FLASK_ENV=production
       - PYTHONUNBUFFERED=1
+      - RISK_SCORING_API_URL=http://risk-scoring:5001
     depends_on:
       - risk-scoring
       # condition: service_healthy  # 임시 비활성화 - healthcheck 문제 해결 후 다시 활성화
