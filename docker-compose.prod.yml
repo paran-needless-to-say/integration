@@ -37,6 +37,7 @@ services:
     environment:
       - FLASK_ENV=production
       - PYTHONUNBUFFERED=1
+      - ALLOW_ALL_ORIGINS=true  # 개발 환경: CORS 모든 origin 허용
       - RISK_SCORING_API_URL=${RISK_SCORING_API_URL:-http://3.38.112.25:5001}
     depends_on:
       - risk-scoring
