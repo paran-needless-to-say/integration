@@ -32,6 +32,8 @@ services:
     restart: unless-stopped
     ports:
       - "8888:8888"
+    volumes:
+      - ./backend/src:/app/src:ro  # 코드 변경사항 자동 반영
     env_file:
       - .env
     environment:
