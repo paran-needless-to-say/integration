@@ -59,6 +59,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile.prod
+      args:
+        VITE_BACKEND_API_URL: ${VITE_BACKEND_API_URL:-http://3.38.112.25:8888}
     container_name: trace-x-frontend
     restart: unless-stopped
     ports:
