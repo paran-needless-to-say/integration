@@ -56,3 +56,4 @@ data/results/
 # Docker
 *.dockerignore
 
+frontend-custom/
