@@ -2,6 +2,8 @@
 
 블록체인 주소의 위험도를 분석하는 통합 플랫폼입니다.
 
+https://youtu.be/dbo9gwlLPCw?si=TTSQCYIgirdBvLe7
+
 ## 목차
 
 - [프로젝트 소개](#프로젝트-소개)
